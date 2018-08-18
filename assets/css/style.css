@@ -1,7 +1,17 @@
 div {
-  height: 150px;
-  width: 150px;
+  height: 450px;
+  width: 450px;
   margin: auto;
-  border: 1px solid black;
   
+  margin-top: 300px;
+}
+
+body {
+  background: url("../images/cast.png") repeat-x;
+  background-color: black;
+}
+
+#p {
+  width: 100%
+
 }
