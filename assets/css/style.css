@@ -29,11 +29,12 @@ div {
 
 #hud {
   position: fixed;
-  bottom: 0px;
+  bottom: -20px;
   width: 100%;
-  height: 20f0px;
+  height: 220px;
   display: flex;
   justify-content: space-evenly;
+  border: 1px solid white;
 }
 .col {
   text-align: center;
@@ -41,15 +42,23 @@ div {
 }
 p {
   margin: 0;
+  padding: 0;
 }
 
 .hp {
   letter-spacing: -15px;
   color: red;
+  margin: 0;
 }
 
 .items {
   width: 100px;
   border: 5px ridge white;
-  margin-top: 20px;
+}
+
+#expBar {
+  margin-left: 24%;
+  margin-right: 24%;
+  color: red;
+  width: 0%;
 }
