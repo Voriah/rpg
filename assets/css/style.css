@@ -1,17 +1,55 @@
-div {
+@font-face { 
+    font-family: nes;
+    src: url("../fonts/emulogic.ttf");
+}
+
+.floor {
   height: 450px;
-  width: 450px;
+  width: 900px;
   margin: auto;
-  
+  display: flex;
   margin-top: 300px;
 }
 
 body {
   background: url("../images/cast.png") repeat-x;
   background-color: black;
+  font-family: nes;
 }
 
-#p {
-  width: 100%
+#p, #e {
+  width: 50%
+}
 
+div {
+  color: white;
+  font-size: 20px;
+  /* border: 1px solid white; */
+}
+
+#hud {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 20f0px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.col {
+  text-align: center;
+
+}
+p {
+  margin: 0;
+}
+
+.hp {
+  letter-spacing: -15px;
+  color: red;
+}
+
+.items {
+  width: 100px;
+  border: 5px ridge white;
+  margin-top: 20px;
 }
