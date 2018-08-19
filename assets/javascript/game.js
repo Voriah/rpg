@@ -16,6 +16,7 @@ var enemyChar = {
   death: "",
 }
 
+
 var enemies = [
   {
     name: "medusa",
@@ -25,7 +26,7 @@ var enemies = [
     stand: "assets/images/medusastand.gif",
     fight: "assets/images/medusattack.gif",
     fightDelay: 1350,
-    death: "",
+    death: "assets/images/medusadeath.gif",
   }
 ];
 
@@ -40,15 +41,20 @@ function left () {
     'background-position-x': '-=50px',
   }, 300);
 }
-
+$(document).ready(function () {
+  var audio = new Audio('assets/audio/cast.ogg');
+  audio.play(); 
+  
+});
 
 document.onkeypress = function (evt) {
   evt = evt || window.event;
   var charCode = evt.keyCode || evt.which;
   var input = charCode;
   
+
   console.log(input);
-  
+ 
   switch (input) {
     case 32: 
     $("#p").attr("src", "assets/images/jump.gif");
@@ -85,6 +91,11 @@ function playerDamage() {
       d--;
     }
   }
+  if (d <= 0) {
+    $("#e").attr("src", `${enemyChar.death}`);
+    playerChar.exp+=enemyChar.exp;
+    console.log(playerChar.exp);
+  }
   
 }
 
@@ -105,6 +116,8 @@ function enemyDamage() {
   }
   $("#e").attr("src", `${enemyChar.fight}`);
   setTimeout(fightReset, enemyChar.fightDelay)
+
+
 }
 
 function fightReset() {
@@ -127,7 +140,7 @@ function setEnemy(char) {
   enemyChar.name = char.name;
   enemyChar.dam = char.dam;
   enemyChar.hp = char.hp;
-  enemyChar.exp = 0;
+  enemyChar.exp = char.exp;
   enemyChar.stand = char.stand;
   enemyChar.fight = char.fight;
   enemyChar.death = char.death;
