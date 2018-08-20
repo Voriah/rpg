@@ -1,7 +1,6 @@
 $(document).ready(function () {
   var audio = new Audio('assets/audio/cast.ogg');
   audio.play(); 
-  setPlayer(players[0]);
 });
 
 //curent player char
@@ -22,15 +21,15 @@ var playerChar = {
 
 //current enemy char
 var enemyChar = {
-  name: "Dracula",
-  dam: 50,
-  hp: 150,
-  exp: 10,
+  name: "",
+  dam: 0,
+  hp: 0,
+  exp: 0,
   stand: "",
   fight: "",
   fightDelay: 0,
   death: "",
-}
+};
 
 //set player attributes for selected character
 function setPlayer(char) {
@@ -67,6 +66,7 @@ function setEnemy(char) {
     }
   
 }
+
 //playable characters
 var players = [
   {
@@ -140,22 +140,26 @@ document.onkeypress = function (evt) {
  
   switch (input) {
     case 32: //space
-    $("#p").attr("src", `${playerChar.jump}`);
-    enemyDamage();
+      jump();
+      
     break;
     case 100: //d
-    walk();
-    setTimeout(stand, `${playerChar.walkDelay}`)
+      walk();
+      setTimeout(stand, `${playerChar.walkDelay}`)
     right();
     setEnemy(enemies[1]);
     break;
     case 97: //a
     $("#p").attr("src", "assets/images/walkyback.gif");
     left();
+      setPlayer(players[0]);
     break;
     case 102: //f
     fight();
     playerDamage();
+    break;
+    case 49:
+    enemyDamage();
     break;
   }
 }
@@ -168,14 +172,17 @@ function stand() {
 //set walking animation
 function walk() {
   $("#p").attr("src", `${playerChar.walk}`);
-
+  setTimeout(stand, `${playerChar.walkDelay}`)
 }
 
 //jump return to stand animation
 function jump() {
   $("#p").attr("src", `${playerChar.jump}`);
   setTimeout(stand, `${playerChar.jumpDelay}`)
-
+}
+ 
+function death() {
+  $("#p").attr("src", `${playerChar.death}`);
 }
 
 //calc player damage subtract from enemy life bar
@@ -263,9 +270,8 @@ function enemyDamage() {
   setTimeout(fightReset, enemyChar.fightDelay)
   
   if  ($(`#hp${1}`).css("color") === "rgb(255, 255, 255)") {
-    $("#p").attr("src", `${playerChar.death}`);
-}
-  console.log($(`#hp${1}`).css("color"));
+    death();
+    }
 }
 
 //set enemy animation to stand after attack animation is finished
