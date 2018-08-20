@@ -61,6 +61,11 @@ function setEnemy(char) {
   enemyChar.fightDelay = char.fightDelay;
   enemyChar.death = char.death;
   $("#e").attr("src", `${char.stand}`);
+  
+    for (i = 1; i <= 20; i++) {
+      $(`#ehp${i}`).css("color", "red");
+    }
+  
 }
 //playable characters
 var players = [
@@ -74,10 +79,9 @@ var players = [
     walkDelay: 600,
     fight: "assets/images/simonattack.gif",
     fightDelay: 900,
-    jump: "",
-    jumpDelay: "",
-    death: "assets/images/medusadeath.gif",
-    
+    jump: "assets/images/simonjump.gif",
+    jumpDelay: 900,
+    death: "assets/images/simondeath.gif", 
   },
 ];
 
@@ -136,7 +140,7 @@ document.onkeypress = function (evt) {
  
   switch (input) {
     case 32: //space
-    $("#p").attr("src", "assets/images/jump.gif");
+    $("#p").attr("src", `${playerChar.jump}`);
     enemyDamage();
     break;
     case 100: //d
@@ -164,6 +168,13 @@ function stand() {
 //set walking animation
 function walk() {
   $("#p").attr("src", `${playerChar.walk}`);
+
+}
+
+//jump return to stand animation
+function jump() {
+  $("#p").attr("src", `${playerChar.jump}`);
+  setTimeout(stand, `${playerChar.jumpDelay}`)
 
 }
 
@@ -250,6 +261,11 @@ function enemyDamage() {
   }
   $("#e").attr("src", `${enemyChar.fight}`);
   setTimeout(fightReset, enemyChar.fightDelay)
+  
+  if  ($(`#hp${1}`).css("color") === "rgb(255, 255, 255)") {
+    $("#p").attr("src", `${playerChar.death}`);
+}
+  console.log($(`#hp${1}`).css("color"));
 }
 
 //set enemy animation to stand after attack animation is finished
