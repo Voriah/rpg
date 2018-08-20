@@ -1,15 +1,26 @@
 $(document).ready(function () {
   var audio = new Audio('assets/audio/cast.ogg');
   audio.play(); 
+  setPlayer(players[0]);
 });
 
+//curent player char
 var playerChar = {
-  name: "Richter",
-  dam: 45,
-  hp: 100,
-  exp: 0
-  
+  name: "",
+  dam: 0,
+  hp: 0,
+  exp: 0,
+  stand: "",
+  walk: "",
+  walkDelay: 0,
+  fight: "",
+  fightDelay: 0,
+  jump: "",
+  jumpDelay: "",
+  death: ""
 }
+
+//current enemy char
 var enemyChar = {
   name: "Dracula",
   dam: 50,
@@ -21,7 +32,56 @@ var enemyChar = {
   death: "",
 }
 
+//set player attributes for selected character
+function setPlayer(char) {
+  $("#playerName").html(char.name);
+  playerChar.name = char.name;
+  playerChar.dam = char.dam;
+  playerChar.hp = char.hp;
+  playerChar.exp = 0;
+  playerChar.stand = char.stand;
+  playerChar.walk = char.walk;
+  playerChar.walkDelay = char.walkDelay;
+  playerChar.fight = char.fight;
+  playerChar.fightDelay = char.fightDelay;
+  playerChar.jump = char.jump;
+  playerChar.jumpDelay = char.jumpDelay;
+  playerChar.death = char.death;
+}
 
+//set enemy attributes for currently active enemy
+function setEnemy(char) {
+  $("#enemyName").html(char.name);
+  enemyChar.name = char.name;
+  enemyChar.dam = char.dam;
+  enemyChar.hp = char.hp;
+  enemyChar.exp = char.exp;
+  enemyChar.stand = char.stand;
+  enemyChar.fight = char.fight;
+  enemyChar.fightDelay = char.fightDelay;
+  enemyChar.death = char.death;
+  $("#e").attr("src", `${char.stand}`);
+}
+//playable characters
+var players = [
+  {
+    name: "Simon",
+    dam: 40,
+    hp: 100,
+    exp: 0,
+    stand: "assets/images/simonstand.png",
+    walk: "assets/images/simonwalk.gif",
+    walkDelay: 600,
+    fight: "assets/images/simonattack.gif",
+    fightDelay: 900,
+    jump: "",
+    jumpDelay: "",
+    death: "assets/images/medusadeath.gif",
+    
+  },
+];
+
+//possible enemies
 var enemies = [
   {
     name: "medusa",
@@ -45,18 +105,27 @@ var enemies = [
   },
 ];
 
-function right () { 
-  $('body').animate({
-    'background-position-x': '+=50px',
-  }, 300);
+function fight() {
+  $("#p").attr("src", `${playerChar.fight}`);
+  setTimeout(stand, `${playerChar.fightDelay}`)
+
 }
 
+//move to the right
 function left () { 
   $('body').animate({
-    'background-position-x': '-=50px',
-  }, 300);
+    'background-position-x': '+=100px',
+  }, `${playerChar.walkDelay}`);
 }
 
+//move to the left
+function right () { 
+  $('body').animate({
+    'background-position-x': '-=100px',
+  }, `${playerChar.walkDelay}`);
+}
+
+//key press actions
 document.onkeypress = function (evt) {
   evt = evt || window.event;
   var charCode = evt.keyCode || evt.which;
@@ -66,26 +135,39 @@ document.onkeypress = function (evt) {
   console.log(input);
  
   switch (input) {
-    case 32: 
+    case 32: //space
     $("#p").attr("src", "assets/images/jump.gif");
     enemyDamage();
     break;
-    case 100: 
-    $("#p").attr("src", "assets/images/walkyg.gif");
-    left();
+    case 100: //d
+    walk();
+    setTimeout(stand, `${playerChar.walkDelay}`)
+    right();
     setEnemy(enemies[1]);
     break;
-    case 97: 
+    case 97: //a
     $("#p").attr("src", "assets/images/walkyback.gif");
-    right();
+    left();
     break;
-    case 102: 
-    $("#p").attr("src", "assets/images/atackf.gif");
+    case 102: //f
+    fight();
     playerDamage();
     break;
   }
 }
 
+//set standing animation
+function stand() {
+  $("#p").attr("src", `${playerChar.stand}`);
+}
+
+//set walking animation
+function walk() {
+  $("#p").attr("src", `${playerChar.walk}`);
+
+}
+
+//calc player damage subtract from enemy life bar
 function playerDamage() {
   var p = enemyChar.hp/20;
   var x = playerChar.dam;
@@ -112,6 +194,7 @@ function playerDamage() {
   }
 }
 
+//get exp on kill update xpbar
 function getXp() {
   var d = 1;
   var x = playerChar.exp/10;
@@ -127,25 +210,29 @@ function getXp() {
     }
   }
 
+//flourish for lvling up
 function gold() {
   for (i = 1; i <= 20; i++) {
     $(`#xp${i}`).css("color", "gold");
   }
 }
 
+//reset xp bar when lvling up
 function white() {
   for (i = 1; i <= 20; i++) {
     $(`#xp${i}`).css("color", "white");
   }
 }
 
-  function lvlUp() {
+//add damage and hp when lvling up, xpbar animation
+function lvlUp() {
     playerChar.dam *= 1.25;
     playerChar.hp *= 1.25;
     gold();
     setTimeout(white, 1500);
     }
 
+//calc enemy damage, subtract from player life bar
 function enemyDamage() {
   var p = playerChar.hp/20;
   var x = enemyChar.dam;
@@ -163,36 +250,12 @@ function enemyDamage() {
   }
   $("#e").attr("src", `${enemyChar.fight}`);
   setTimeout(fightReset, enemyChar.fightDelay)
-
-
 }
 
+//set enemy animation to stand after attack animation is finished
 function fightReset() {
   $("#e").attr("src", `${enemyChar.stand}`);
 }
 
-function setPlayer(char) {
-  $("#playerName").html(char.name);
-  playerChar.name = char.name;
-  playerChar.dam = char.dam;
-  playerChar.hp = char.hp;
-  playerChar.exp = 0;
-  playerChar.stand = char.stand;
-  playerChar.fight = char.fight;
-  playerChar.death = char.death;
-}
-
-function setEnemy(char) {
-  $("#enemyName").html(char.name);
-  enemyChar.name = char.name;
-  enemyChar.dam = char.dam;
-  enemyChar.hp = char.hp;
-  enemyChar.exp = char.exp;
-  enemyChar.stand = char.stand;
-  enemyChar.fight = char.fight;
-  enemyChar.death = char.death;
-  enemyChar.fightDelay = char.fightDelay;
-  $("#e").attr("src", `${char.stand}`);
-}
 
 
