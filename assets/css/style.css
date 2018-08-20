@@ -29,7 +29,7 @@ div {
 
 #hud {
   position: fixed;
-  bottom: -20px;
+  bottom: 30px;
   width: 100%;
   height: 220px;
   display: flex;
@@ -44,9 +44,15 @@ p {
   padding: 0;
 }
 
-.hp {
+.hp{
   letter-spacing: -15px;
   color: red;
+  margin: 0;
+}
+
+.xp{
+  letter-spacing: -15px;
+  color: white;
   margin: 0;
 }
 

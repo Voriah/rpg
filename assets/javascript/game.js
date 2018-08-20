@@ -39,8 +39,8 @@ var enemies = [
     hp: 50,
     exp: 20,
     stand: "assets/images/skeletonstand.gif",
-    fight: "assets/images/medusattack.gif",
-    fightDelay: 1350,
+    fight: "assets/images/skeletonattack.gif",
+    fightDelay: 1800,
     death: "assets/images/skeletondeath.gif",
   },
 ];
@@ -103,11 +103,48 @@ function playerDamage() {
   }
   if (d <= 0) {
     $("#e").attr("src", `${enemyChar.death}`);
-    playerChar.exp+=enemyChar.exp;
-    console.log(playerChar.exp);
+    playerChar.exp = 0 + enemyChar.exp;
+    getXp();
+    
+    if ($(`#xp${20}`).css("color") !== "rgb(255, 255, 255)"){
+      lvlUp();
+    }
   }
-  
 }
+
+function getXp() {
+  var d = 1;
+  var x = playerChar.exp/10;
+  
+  for (let i = 1; i <= 20; i++) {
+    if ($(`#xp${i}`).css("color") !== "rgb(255, 255, 255)") {
+      d++;
+    }
+  }
+  for (x; x > 0; x--) {
+      $(`#xp${d}`).css("color", "red")
+      d++;
+    }
+  }
+
+function gold() {
+  for (i = 1; i <= 20; i++) {
+    $(`#xp${i}`).css("color", "gold");
+  }
+}
+
+function white() {
+  for (i = 1; i <= 20; i++) {
+    $(`#xp${i}`).css("color", "white");
+  }
+}
+
+  function lvlUp() {
+    playerChar.dam *= 1.25;
+    playerChar.hp *= 1.25;
+    gold();
+    setTimeout(white, 1500);
+    }
 
 function enemyDamage() {
   var p = playerChar.hp/20;
