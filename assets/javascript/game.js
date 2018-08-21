@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var audio = new Audio('assets/audio/cast.ogg');
   audio.play(); 
+  setPlayer(players[0]);
 });
 
 //curent player char
@@ -51,6 +52,7 @@ function setPlayer(char) {
   playerChar.jump = char.jump;
   playerChar.jumpDelay = char.jumpDelay;
   playerChar.death = char.death;
+  $("#p").attr("src", `${char.stand}`);
 }
 
 //set enemy attributes for currently active enemy
@@ -71,13 +73,15 @@ function setEnemy(char) {
       $(`#ehp${i}`).css("color", "red");
     }
   
+  $("#enemyLifeBar").css("visibility", "initial");
+  
 }
 
 //playable characters
 var players = [
   {
     name: "Simon",
-    dam: 40,
+    dam: 20,
     hp: 100,
     exp: 0,
     stand: "assets/images/simonstand.png",
@@ -103,10 +107,21 @@ var enemies = [
     stand: "assets/images/medusastand.gif",
     fight: "assets/images/medusattack.gif",
     fightDelay: 1350,
-    impact: 900,
+    impact: 825,
     death: "assets/images/medusadeath.gif",
   },
   {
+    name: "mummy",
+    dam: 20,
+    hp: 50,
+    exp: 20,
+    stand: "assets/images/mummystand.gif",
+    fight: "assets/images/mummyattack.gif",
+    fightDelay: 2400,
+    impact: 1600,
+    death: "assets/images/mummydeath.gif",
+  },
+  { 
     name: "skeleton",
     dam: 15,
     hp: 50,
@@ -116,6 +131,17 @@ var enemies = [
     fightDelay: 1800,
     impact: 1800,
     death: "assets/images/skeletondeath.gif",
+  },
+  {
+    name: "death",
+    dam: 25,
+    hp: 100,
+    exp: 50,
+    stand: "assets/images/deathstand.gif",
+    fight: "assets/images/deathattack.gif",
+    fightDelay: 2200,
+    impact: 1600,
+    death: "assets/images/deathdeath.gif",
   },
 ];
 
@@ -150,26 +176,43 @@ document.onkeypress = function (evt) {
  
   switch (input) {
     case 32: //space
-      jump();
-      
-    break;
+      jump();  
+      break;
     case 100: //d
-    walk();
-      
-    right();
-    setEnemy(enemies[0]);
-    break;
+      walk();      
+      right();
+      break;
     case 97: //a
-    walkBack();
-    left();
-      setPlayer(players[0]);
-    break;
+      walkBack();
+      left(); 
+      break;
     case 102: //f
-    playerDamage();
-    break;
-    case 49:
-    enemyDamage();
-    break;
+      playerDamage();
+      break;
+    case 113: //q
+      setPlayer(players[0]);
+      break;
+    case 114: //r
+      enemyDamage();
+      break;
+    case 49: //1
+      setEnemy(enemies[0]);
+      break;
+    case 50: //2
+      setEnemy(enemies[1]);
+      break;
+    case 51: //3
+      setEnemy(enemies[2]);
+      break;
+    case 52: //4
+      setEnemy(enemies[3]);
+      break;
+    case 53: //5
+      
+      break;
+    case 54: //6
+      
+      break;
   }
 }
 

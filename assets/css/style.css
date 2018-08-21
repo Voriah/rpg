@@ -26,10 +26,13 @@ div {
   font-size: 20px;
   /* border: 1px solid white; */
 }
+#enemyLifeBar {
+  visibility: hidden;
+}
 
 #hud {
   position: fixed;
-  bottom: 30px;
+  bottom: -15px;
   width: 100%;
   height: 220px;
   display: flex;
