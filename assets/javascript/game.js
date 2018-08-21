@@ -207,12 +207,6 @@ document.onkeypress = function (evt) {
     case 52: //4
       setEnemy(enemies[3]);
       break;
-    case 53: //5
-      
-      break;
-    case 54: //6
-      
-      break;
   }
 }
 
