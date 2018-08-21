@@ -11,9 +11,11 @@ var playerChar = {
   exp: 0,
   stand: "",
   walk: "",
+  walkB: "",
   walkDelay: 0,
   fight: "",
   fightDelay: 0,
+  impact: 0,
   jump: "",
   jumpDelay: "",
   death: ""
@@ -28,6 +30,7 @@ var enemyChar = {
   stand: "",
   fight: "",
   fightDelay: 0,
+  impact: 0,
   death: "",
 };
 
@@ -40,9 +43,11 @@ function setPlayer(char) {
   playerChar.exp = 0;
   playerChar.stand = char.stand;
   playerChar.walk = char.walk;
+  playerChar.walkB = char.walkB;
   playerChar.walkDelay = char.walkDelay;
   playerChar.fight = char.fight;
   playerChar.fightDelay = char.fightDelay;
+  playerChar.impact = char.impact;
   playerChar.jump = char.jump;
   playerChar.jumpDelay = char.jumpDelay;
   playerChar.death = char.death;
@@ -58,6 +63,7 @@ function setEnemy(char) {
   enemyChar.stand = char.stand;
   enemyChar.fight = char.fight;
   enemyChar.fightDelay = char.fightDelay;
+  enemyChar.impact = char.impact;
   enemyChar.death = char.death;
   $("#e").attr("src", `${char.stand}`);
   
@@ -76,9 +82,11 @@ var players = [
     exp: 0,
     stand: "assets/images/simonstand.png",
     walk: "assets/images/simonwalk.gif",
+    walkB: "assets/images/simonwalkback.gif",
     walkDelay: 600,
     fight: "assets/images/simonattack.gif",
     fightDelay: 900,
+    impact: 450,
     jump: "assets/images/simonjump.gif",
     jumpDelay: 900,
     death: "assets/images/simondeath.gif", 
@@ -95,6 +103,7 @@ var enemies = [
     stand: "assets/images/medusastand.gif",
     fight: "assets/images/medusattack.gif",
     fightDelay: 1350,
+    impact: 900,
     death: "assets/images/medusadeath.gif",
   },
   {
@@ -105,15 +114,16 @@ var enemies = [
     stand: "assets/images/skeletonstand.gif",
     fight: "assets/images/skeletonattack.gif",
     fightDelay: 1800,
+    impact: 1800,
     death: "assets/images/skeletondeath.gif",
   },
 ];
 
-function fight() {
-  $("#p").attr("src", `${playerChar.fight}`);
-  setTimeout(stand, `${playerChar.fightDelay}`)
+// function fight() {
+//   $("#p").attr("src", `${playerChar.fight}`);
+//   setTimeout(stand, `${playerChar.fightDelay}`)
 
-}
+// }
 
 //move to the right
 function left () { 
@@ -144,18 +154,17 @@ document.onkeypress = function (evt) {
       
     break;
     case 100: //d
-      walk();
-      setTimeout(stand, `${playerChar.walkDelay}`)
+    walk();
+      
     right();
-    setEnemy(enemies[1]);
+    setEnemy(enemies[0]);
     break;
     case 97: //a
-    $("#p").attr("src", "assets/images/walkyback.gif");
+    walkBack();
     left();
       setPlayer(players[0]);
     break;
     case 102: //f
-    fight();
     playerDamage();
     break;
     case 49:
@@ -174,6 +183,10 @@ function walk() {
   $("#p").attr("src", `${playerChar.walk}`);
   setTimeout(stand, `${playerChar.walkDelay}`)
 }
+function walkBack() {
+  $("#p").attr("src", `${playerChar.walkB}`);
+  setTimeout(stand, `${playerChar.walkDelay}`)
+}
 
 //jump return to stand animation
 function jump() {
@@ -185,6 +198,31 @@ function death() {
   $("#p").attr("src", `${playerChar.death}`);
 }
 
+function damageTimingPlayer(x, p, d) {
+  for (x; x > 0; x -= p) {
+    if (x >= p) {
+      $(`#ehp${d}`).css("color", "white")
+      d--;
+    }
+  }
+  if ($(`#ehp1`).css("color") === "rgb(255, 255, 255)") {
+    $("#e").attr("src", `${enemyChar.death}`);
+    playerChar.exp = 0 + enemyChar.exp;
+    getXp();
+  }
+}
+
+function damageTimingEnemy(x, p, d) {
+  for (x; x > 0; x -= p) {
+    if (x >= p) {
+      $(`#hp${d}`).css("color", "white")
+      d--;
+    }
+  }
+  if ($(`#hp1`).css("color") === "rgb(255, 255, 255)") {
+    death();
+  }
+}
 //calc player damage subtract from enemy life bar
 function playerDamage() {
   var p = enemyChar.hp/20;
@@ -195,21 +233,16 @@ function playerDamage() {
       d--;
     }
   }
-  for (x; x >0; x-=p) {
-    if (x >= p) {
-      $(`#ehp${d}`).css("color", "white")
-      d--;
-    }
-  }
-  if (d <= 0) {
-    $("#e").attr("src", `${enemyChar.death}`);
-    playerChar.exp = 0 + enemyChar.exp;
-    getXp();
+  setTimeout(function () {
+    damageTimingPlayer(x, p, d);
+  }, `${playerChar.impact}`)
+
+  $("#p").attr("src", `${playerChar.fight}`);
+  setTimeout(stand, `${playerChar.fightDelay}`);
     
-    if ($(`#xp${20}`).css("color") !== "rgb(255, 255, 255)"){
-      lvlUp();
+  if ($(`#xp${20}`).css("color") !== "rgb(255, 255, 255)"){
+    lvlUp();
     }
-  }
 }
 
 //get exp on kill update xpbar
@@ -260,18 +293,16 @@ function enemyDamage() {
       d--;
     }
   }
-  for (x; x >0; x-=p) {
-    if (x >= p) {
-      $(`#hp${d}`).css("color", "white")
-      d--;
-    }
-  }
+
+  var impact = enemyChar.fightDelay *0.9;
+
+  setTimeout(function () {
+    damageTimingEnemy(x, p, d);
+  }, `${enemyChar.impact}`)
+
   $("#e").attr("src", `${enemyChar.fight}`);
   setTimeout(fightReset, enemyChar.fightDelay)
   
-  if  ($(`#hp${1}`).css("color") === "rgb(255, 255, 255)") {
-    death();
-    }
 }
 
 //set enemy animation to stand after attack animation is finished
