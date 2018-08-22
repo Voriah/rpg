@@ -154,7 +154,13 @@ var items = [
     name: "bow",
     icon: "assets/images/bow.png",
     drop: "assets/images/bowdrop.gif",
-    onUse: function() {},
+    onUse: function() {
+      $("#p").attr("src", "assets/images/bowuse.gif")
+      itemDamage();
+      setTimeout(function () {
+        stand();
+      }, 2000);
+    },
   },
   {
     name: "cross",
@@ -218,6 +224,20 @@ function itemDrop() {
     }, 4000)
 
   }
+}
+
+function itemDamage() {
+  var p = enemyChar.hp / 20;
+  var x = Math.floor(Math.random() * 50 + 100);
+  var d = 20;
+  for (let i = 20; i > 0; i--) {
+    if ($(`#ehp${i}`).css("color") !== "rgb(255, 0, 0)") {
+      d--;
+    }
+  }
+  setTimeout(function () {
+    damageTimingPlayer(x, p, d);
+  }, `${playerChar.impact}`)
 }
 
 //set player attributes for selected character
