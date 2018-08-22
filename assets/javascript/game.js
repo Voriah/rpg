@@ -1,9 +1,9 @@
 $(document).ready(function () {
   setPlayer(players[0]);
 });
-setTimeout(function() {
-  audio.play()
-}, 1000)
+// setTimeout(function() {
+//   audio.play()
+// }, 1000)
 
 var audio = new Audio('assets/audio/cast.ogg');
 audio.loop = true;
@@ -51,7 +51,7 @@ var enemyChar = {
 var players = [
   {
     name: "Simon",
-    dam: 15,
+    dam: 20,
     hp: 100,
     exp: 0,
     stand: "assets/images/simonstand.png",
@@ -72,7 +72,7 @@ var enemies = [
   {
     name: "medusa",
     dam: 10,
-    hp: 25,
+    hp: 75,
     exp: 10,
     stand: "assets/images/medusastand.gif",
     fight: "assets/images/medusattack.gif",
@@ -84,7 +84,7 @@ var enemies = [
   {
     name: "mummy",
     dam: 20,
-    hp: 50,
+    hp: 150,
     exp: 20,
     stand: "assets/images/mummystand.gif",
     fight: "assets/images/mummyattack.gif",
@@ -96,7 +96,7 @@ var enemies = [
   { 
     name: "skeleton",
     dam: 15,
-    hp: 50,
+    hp: 100,
     exp: 20,
     stand: "assets/images/skeletonstand.gif",
     fight: "assets/images/skeletonattack.gif",
@@ -108,7 +108,7 @@ var enemies = [
   {
     name: "death",
     dam: 25,
-    hp: 100,
+    hp: 200,
     exp: 50,
     stand: "assets/images/deathstand.gif",
     fight: "assets/images/deathattack.gif",
@@ -120,7 +120,7 @@ var enemies = [
   {
     name: "frankenstein",
     dam: 25,
-    hp: 60,
+    hp: 160,
     exp: 30,
     stand: "assets/images/frankensteinstand.gif",
     fight: "assets/images/frankensteinattack.gif",
@@ -132,16 +132,93 @@ var enemies = [
   {
     name: "gaibon",
     dam: 25,
-    hp: 60,
+    hp: 140,
     exp: 30,
     stand: "assets/images/gaibonstand.gif",
     fight: "assets/images/gaibonattack.gif",
     fightDelay: 1750,
-    attackSpeed: 5200,
+    attackSpeed: 4000,
     impact: 1750,
     death: "assets/images/gaibondeath.gif",
   },
 ];
+
+var items = [
+  {
+    name: "axe",
+    icon: "assets/images/axe.png",
+    drop: "assets/images/axedrop.gif",
+    onUse: function() {},
+  },
+  {
+    name: "bow",
+    icon: "assets/images/bow.png",
+    drop: "assets/images/bowdrop.gif",
+    onUse: function() {},
+  },
+  {
+    name: "cross",
+    icon: "assets/images/cross.png",
+    drop: "assets/images/crossdrop.gif",
+    onUse: function() {},
+  },
+  {
+    name: "holywater",
+    icon: "assets/images/holywater.png",
+    drop: "assets/images/holywaterdrop.gif",
+    onUse: function() {},
+  },
+  {
+    name: "knife",
+    icon: "assets/images/knife.png",
+    drop: "assets/images/knifedrop.gif",
+    onUse: function() {},
+  },
+  {
+    name: "meat",
+    icon: "assets/images/meat.png",
+    drop: "assets/images/meatdrop.gif",
+    onUse: function() {
+        for (i = 1; i <= 20; i++) {
+          $(`#hp${i}`).css("color", "red");
+      }
+    },
+  },
+];
+
+function useItemOne() { 
+  console.log($("#firstItem").attr("data-itemNum"))
+  var use = $("#firstItem").attr("data-itemNum");
+  items[use].onUse();
+  $("#firstItem").attr("src", "");
+}
+
+function useItemTwo() { 
+  console.log($("#secondItem").attr("data-itemNum"))
+  var use = $("#secondItem").attr("data-itemNum");
+  items[use].onUse();
+  $("#secondItem").attr("src", "");
+}
+
+function itemDrop() { 
+  var rand = Math.floor(Math.random() * 0)
+  var getItem = Math.floor(Math.random() * 6)
+  if (rand === 0 ) {
+    setTimeout(function() {
+      $("#e").attr("src", items[getItem].drop);
+    }, 2200)
+    setTimeout(function() {
+      if ($("#firstItem").attr("src") === "") {
+      $("#firstItem").attr("src", items[getItem].icon);
+      $("#firstItem").attr("data-itemNum", getItem);
+      } else if ($("#secondItem").attr("src") === "") {
+        $("#secondItem").attr("src", items[getItem].icon)
+        $("#secondItem").attr("data-itemNum", getItem);
+      }
+    }, 4000)
+
+  }
+}
 
 //set player attributes for selected character
 function setPlayer(char) {
@@ -298,6 +375,9 @@ document.onkeypress = function (evt) {
     case 54: //6
     setEnemy(enemies[5]);
     break;
+    case 55: //7
+      $("#e").attr("src", "assets/images/knifedrop.gif")
+    break;
   }
 }
 
@@ -309,7 +389,7 @@ function death() {
 function playerDamage() {
   if (enemyChar.alive === true) {
     var p = enemyChar.hp/20;
-    var x = playerChar.dam;
+    var x = Math.floor(Math.random() * 30 + playerChar.dam);
     var d = 20;
     for (let i = 20; i > 0; i--) {
       if ($(`#ehp${i}`).css("color") !== "rgb(255, 0, 0)"){
@@ -338,6 +418,10 @@ function damageTimingPlayer(x, p, d) {
     playerChar.exp = 0 + enemyChar.exp;
     getXp();
     enemyChar.alive = false;
+    setTimeout(function () {
+      $("#e").attr("src", "");
+    }, 2150)
+    itemDrop();
     clearInterval(fight);
     setTimeout(function() {
       $("#enemyLifeBar").css("visibility", "hidden");
