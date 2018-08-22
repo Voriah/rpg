@@ -117,6 +117,30 @@ var enemies = [
     impact: 1600,
     death: "assets/images/deathdeath.gif",
   },
+  {
+    name: "frankenstein",
+    dam: 25,
+    hp: 60,
+    exp: 30,
+    stand: "assets/images/frankensteinstand.gif",
+    fight: "assets/images/frankensteinattack.gif",
+    fightDelay: 1500,
+    attackSpeed: 4200,
+    impact: 1000,
+    death: "assets/images/frankensteindeath.gif",
+  },
+  {
+    name: "gaibon",
+    dam: 25,
+    hp: 60,
+    exp: 30,
+    stand: "assets/images/gaibonstand.gif",
+    fight: "assets/images/gaibonattack.gif",
+    fightDelay: 1750,
+    attackSpeed: 5200,
+    impact: 1750,
+    death: "assets/images/gaibondeath.gif",
+  },
 ];
 
 //set player attributes for selected character
@@ -167,7 +191,7 @@ function setEnemy(char) {
 function posit () {
   switch (spawn) {
     case -400:
-    setEnemy(enemies[Math.floor(Math.random()*4)]);
+    setEnemy(enemies[Math.floor(Math.random()*6)]);
     spawn += 400;
     break;  
   }
@@ -267,6 +291,12 @@ document.onkeypress = function (evt) {
     break;
     case 52: //4
     setEnemy(enemies[3]);
+    break;4
+    case 53: //5
+    setEnemy(enemies[4]);
+    break;
+    case 54: //6
+    setEnemy(enemies[5]);
     break;
   }
 }
