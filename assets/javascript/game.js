@@ -22,17 +22,35 @@ var playerChar = {
   death: ""
 }
 
+
+var spawn = parseInt($("body").css("background-position-x"))
+
+function posit () {
+  
+ 
+  console.log(spawn)
+  
+  switch (spawn) {
+    case -400:
+    setEnemy(enemies[Math.floor(Math.random()*4)]);
+    spawn += 400;
+    break;
+    
+  }
+}
+
 //current enemy char
 var enemyChar = {
   name: "",
-  dam: 0,
-  hp: 0,
-  exp: 0,
+  dam: "",
+  hp: "",
+  exp: "",
   stand: "",
   fight: "",
-  fightDelay: 0,
-  impact: 0,
+  fightDelay: "",
+  impact: "",
   death: "",
+  alive: false,
 };
 
 //set player attributes for selected character
@@ -67,14 +85,13 @@ function setEnemy(char) {
   enemyChar.fightDelay = char.fightDelay;
   enemyChar.impact = char.impact;
   enemyChar.death = char.death;
+  enemyChar.alive = true;
   $("#e").attr("src", `${char.stand}`);
   
     for (i = 1; i <= 20; i++) {
       $(`#ehp${i}`).css("color", "red");
     }
-  
   $("#enemyLifeBar").css("visibility", "initial");
-  
 }
 
 //playable characters
@@ -163,6 +180,7 @@ function right () {
   $('body').animate({
     'background-position-x': '-=100px',
   }, `${playerChar.walkDelay}`);
+  spawn -=100;
 }
 
 //key press actions
@@ -181,6 +199,7 @@ document.onkeypress = function (evt) {
     case 100: //d
       walk();      
       right();
+      posit();
       break;
     case 97: //a
       walkBack();
@@ -246,6 +265,7 @@ function damageTimingPlayer(x, p, d) {
     $("#e").attr("src", `${enemyChar.death}`);
     playerChar.exp = 0 + enemyChar.exp;
     getXp();
+    enemyChar.alive = false;
   }
 }
 
@@ -277,9 +297,6 @@ function playerDamage() {
   $("#p").attr("src", `${playerChar.fight}`);
   setTimeout(stand, `${playerChar.fightDelay}`);
     
-  if ($(`#xp${20}`).css("color") !== "rgb(255, 255, 255)"){
-    lvlUp();
-    }
 }
 
 //get exp on kill update xpbar
@@ -296,6 +313,12 @@ function getXp() {
       $(`#xp${d}`).css("color", "red")
       d++;
     }
+  
+  if ($(`#xp20`).css("color") !== "rgb(255, 255, 255)") {
+    lvlUp();
+  }
+
+
   }
 
 //flourish for lvling up
