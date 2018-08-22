@@ -22,6 +22,7 @@ var playerChar = {
   jumpDelay: "",
   death: ""
 }
+var fight;
 var dkey = true;
 var fkey = true;
 var spawn = parseInt($("body").css("background-position-x"))
@@ -94,13 +95,14 @@ function setEnemy(char) {
     for (i = 1; i <= 20; i++) {
       $(`#ehp${i}`).css("color", "red");
     }
+ fight = setInterval(combat, 4000)
 }
 
 //playable characters
 var players = [
   {
     name: "Simon",
-    dam: 20,
+    dam: 15,
     hp: 100,
     exp: 0,
     stand: "assets/images/simonstand.png",
@@ -280,7 +282,7 @@ function damageTimingPlayer(x, p, d) {
     playerChar.exp = 0 + enemyChar.exp;
     getXp();
     enemyChar.alive = false;
-    
+    clearInterval(fight);
     setTimeout(function() {
     $("#enemyLifeBar").css("visibility", "hidden");
     $("#enemyName").css("visibility", "hidden");
@@ -319,6 +321,11 @@ function playerDamage() {
   }
 }
 
+function combat() {
+  if(enemyChar.alive === true) {
+    enemyDamage();
+  }
+}
 //get exp on kill update xpbar
 function getXp() {
   var d = 1;
