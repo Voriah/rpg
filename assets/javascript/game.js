@@ -50,6 +50,7 @@ var enemyChar = {
   fightDelay: "",
   impact: "",
   death: "",
+  alive: false,
 };
 
 //set player attributes for selected character
@@ -84,14 +85,13 @@ function setEnemy(char) {
   enemyChar.fightDelay = char.fightDelay;
   enemyChar.impact = char.impact;
   enemyChar.death = char.death;
+  enemyChar.alive = true;
   $("#e").attr("src", `${char.stand}`);
   
     for (i = 1; i <= 20; i++) {
       $(`#ehp${i}`).css("color", "red");
     }
-  
   $("#enemyLifeBar").css("visibility", "initial");
-  
 }
 
 //playable characters
@@ -271,6 +271,7 @@ function damageTimingPlayer(x, p, d) {
     $("#e").attr("src", `${enemyChar.death}`);
     playerChar.exp = 0 + enemyChar.exp;
     getXp();
+    enemyChar.alive = false;
   }
 }
 
