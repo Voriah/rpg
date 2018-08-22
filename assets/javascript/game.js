@@ -1,9 +1,10 @@
 $(document).ready(function () {
-  var audio = new Audio('assets/audio/cast.ogg');
-  audio.play(); 
   setPlayer(players[0]);
 });
-
+var audio = new Audio('assets/audio/cast.ogg');
+setTimeout(function() {
+  audio.play()
+}, 1000)
 //curent player char
 var playerChar = {
   name: "",
@@ -21,8 +22,8 @@ var playerChar = {
   jumpDelay: "",
   death: ""
 }
-
-
+var dkey = true;
+var fkey = true;
 var spawn = parseInt($("body").css("background-position-x"))
 
 function posit () {
@@ -70,11 +71,13 @@ function setPlayer(char) {
   playerChar.jump = char.jump;
   playerChar.jumpDelay = char.jumpDelay;
   playerChar.death = char.death;
-  $("#p").attr("src", `${char.stand}`);
+  $("#p").attr("src", `${char.stand}`); 
 }
 
 //set enemy attributes for currently active enemy
 function setEnemy(char) {
+  $("#enemyLifeBar").css("visibility", "initial");
+  $("#enemyName").css("visibility", "initial");
   $("#enemyName").html(char.name);
   enemyChar.name = char.name;
   enemyChar.dam = char.dam;
@@ -91,7 +94,6 @@ function setEnemy(char) {
     for (i = 1; i <= 20; i++) {
       $(`#ehp${i}`).css("color", "red");
     }
-  $("#enemyLifeBar").css("visibility", "initial");
 }
 
 //playable characters
@@ -197,16 +199,28 @@ document.onkeypress = function (evt) {
       jump();  
       break;
     case 100: //d
-      walk();      
-      right();
-      posit();
+      if (dkey === true && enemyChar.alive === false) {
+        walk();      
+        right();
+        posit();    
+        dkey = false;
+        setTimeout(function () {
+        dkey = true;
+        }, `${playerChar.walkDelay}`)
+      }
       break;
     case 97: //a
       walkBack();
       left(); 
       break;
     case 102: //f
-      playerDamage();
+      if (fkey === true){
+        playerDamage();
+        fkey = false;
+        setTimeout(function() {
+        fkey = true;
+      }, `${playerChar.fightDelay}`)
+      }
       break;
     case 113: //q
       setPlayer(players[0]);
@@ -266,6 +280,11 @@ function damageTimingPlayer(x, p, d) {
     playerChar.exp = 0 + enemyChar.exp;
     getXp();
     enemyChar.alive = false;
+    
+    setTimeout(function() {
+    $("#enemyLifeBar").css("visibility", "hidden");
+    $("#enemyName").css("visibility", "hidden");
+  }, 1000)
   }
 }
 
@@ -282,6 +301,7 @@ function damageTimingEnemy(x, p, d) {
 }
 //calc player damage subtract from enemy life bar
 function playerDamage() {
+  if (enemyChar.alive === true) {
   var p = enemyChar.hp/20;
   var x = playerChar.dam;
   var d = 20;
@@ -296,7 +316,7 @@ function playerDamage() {
 
   $("#p").attr("src", `${playerChar.fight}`);
   setTimeout(stand, `${playerChar.fightDelay}`);
-    
+  }
 }
 
 //get exp on kill update xpbar
