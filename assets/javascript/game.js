@@ -1,10 +1,19 @@
 $(document).ready(function () {
   setPlayer(players[0]);
 });
-var audio = new Audio('assets/audio/cast.ogg');
 setTimeout(function() {
   audio.play()
 }, 1000)
+
+var audio = new Audio('assets/audio/cast.ogg');
+audio.loop = true;
+var cancelWalk;
+var fight;
+var dkey = true;
+var fkey = true;
+var spawn = parseInt($("body").css("background-position-x"))
+
+
 //curent player char
 var playerChar = {
   name: "",
@@ -22,24 +31,6 @@ var playerChar = {
   jumpDelay: "",
   death: ""
 }
-var fight;
-var dkey = true;
-var fkey = true;
-var spawn = parseInt($("body").css("background-position-x"))
-
-function posit () {
-  
- 
-  console.log(spawn)
-  
-  switch (spawn) {
-    case -400:
-    setEnemy(enemies[Math.floor(Math.random()*4)]);
-    spawn += 400;
-    break;
-    
-  }
-}
 
 //current enemy char
 var enemyChar = {
@@ -50,10 +41,83 @@ var enemyChar = {
   stand: "",
   fight: "",
   fightDelay: "",
+  attackSpeed: "",
   impact: "",
   death: "",
   alive: false,
 };
+
+//playable characters
+var players = [
+  {
+    name: "Simon",
+    dam: 15,
+    hp: 100,
+    exp: 0,
+    stand: "assets/images/simonstand.png",
+    walk: "assets/images/simonwalk.gif",
+    walkB: "assets/images/simonwalkback.gif",
+    walkDelay: 600,
+    fight: "assets/images/simonattack.gif",
+    fightDelay: 900,
+    impact: 450,
+    jump: "assets/images/simonjump.gif",
+    jumpDelay: 900,
+    death: "assets/images/simondeath.gif", 
+  },
+];
+
+//possible enemies
+var enemies = [
+  {
+    name: "medusa",
+    dam: 10,
+    hp: 25,
+    exp: 10,
+    stand: "assets/images/medusastand.gif",
+    fight: "assets/images/medusattack.gif",
+    fightDelay: 1350,
+    attackSpeed: 3300,
+    impact: 825,
+    death: "assets/images/medusadeath.gif",
+  },
+  {
+    name: "mummy",
+    dam: 20,
+    hp: 50,
+    exp: 20,
+    stand: "assets/images/mummystand.gif",
+    fight: "assets/images/mummyattack.gif",
+    fightDelay: 2400,
+    attackSpeed: 4000,
+    impact: 1600,
+    death: "assets/images/mummydeath.gif",
+  },
+  { 
+    name: "skeleton",
+    dam: 15,
+    hp: 50,
+    exp: 20,
+    stand: "assets/images/skeletonstand.gif",
+    fight: "assets/images/skeletonattack.gif",
+    fightDelay: 1800,
+    attackSpeed: 3200,
+    impact: 1800,
+    death: "assets/images/skeletondeath.gif",
+  },
+  {
+    name: "death",
+    dam: 25,
+    hp: 100,
+    exp: 50,
+    stand: "assets/images/deathstand.gif",
+    fight: "assets/images/deathattack.gif",
+    fightDelay: 2200,
+    attackSpeed: 4400,
+    impact: 1600,
+    death: "assets/images/deathdeath.gif",
+  },
+];
 
 //set player attributes for selected character
 function setPlayer(char) {
@@ -87,90 +151,27 @@ function setEnemy(char) {
   enemyChar.stand = char.stand;
   enemyChar.fight = char.fight;
   enemyChar.fightDelay = char.fightDelay;
+  enemyChar.attackSpeed = char.attackSpeed;
   enemyChar.impact = char.impact;
   enemyChar.death = char.death;
   enemyChar.alive = true;
-  $("#e").attr("src", `${char.stand}`);
-  
-    for (i = 1; i <= 20; i++) {
+  $("#e").attr("src", `${char.stand}`); 
+    
+  for (i = 1; i <= 20; i++) {
       $(`#ehp${i}`).css("color", "red");
-    }
- fight = setInterval(combat, 4000)
+  }
+  fight = setInterval(combat, `${enemyChar.attackSpeed}`)
 }
 
-//playable characters
-var players = [
-  {
-    name: "Simon",
-    dam: 15,
-    hp: 100,
-    exp: 0,
-    stand: "assets/images/simonstand.png",
-    walk: "assets/images/simonwalk.gif",
-    walkB: "assets/images/simonwalkback.gif",
-    walkDelay: 600,
-    fight: "assets/images/simonattack.gif",
-    fightDelay: 900,
-    impact: 450,
-    jump: "assets/images/simonjump.gif",
-    jumpDelay: 900,
-    death: "assets/images/simondeath.gif", 
-  },
-];
-
-//possible enemies
-var enemies = [
-  {
-    name: "medusa",
-    dam: 10,
-    hp: 25,
-    exp: 10,
-    stand: "assets/images/medusastand.gif",
-    fight: "assets/images/medusattack.gif",
-    fightDelay: 1350,
-    impact: 825,
-    death: "assets/images/medusadeath.gif",
-  },
-  {
-    name: "mummy",
-    dam: 20,
-    hp: 50,
-    exp: 20,
-    stand: "assets/images/mummystand.gif",
-    fight: "assets/images/mummyattack.gif",
-    fightDelay: 2400,
-    impact: 1600,
-    death: "assets/images/mummydeath.gif",
-  },
-  { 
-    name: "skeleton",
-    dam: 15,
-    hp: 50,
-    exp: 20,
-    stand: "assets/images/skeletonstand.gif",
-    fight: "assets/images/skeletonattack.gif",
-    fightDelay: 1800,
-    impact: 1800,
-    death: "assets/images/skeletondeath.gif",
-  },
-  {
-    name: "death",
-    dam: 25,
-    hp: 100,
-    exp: 50,
-    stand: "assets/images/deathstand.gif",
-    fight: "assets/images/deathattack.gif",
-    fightDelay: 2200,
-    impact: 1600,
-    death: "assets/images/deathdeath.gif",
-  },
-];
-
-// function fight() {
-//   $("#p").attr("src", `${playerChar.fight}`);
-//   setTimeout(stand, `${playerChar.fightDelay}`)
-
-// }
+//spawn enemy based on position
+function posit () {
+  switch (spawn) {
+    case -400:
+    setEnemy(enemies[Math.floor(Math.random()*4)]);
+    spawn += 400;
+    break;  
+  }
+}
 
 //move to the right
 function left () { 
@@ -186,6 +187,28 @@ function right () {
   }, `${playerChar.walkDelay}`);
   spawn -=100;
 }
+
+//set standing animation
+function stand() {
+  $("#p").attr("src", `${playerChar.stand}`);
+}
+
+//set walking animation
+function walk() {
+  $("#p").attr("src", `${playerChar.walk}`);
+  cancelWalk = setTimeout(stand, `${playerChar.walkDelay}`)
+}
+function walkBack() {
+  $("#p").attr("src", `${playerChar.walkB}`);
+  setTimeout(stand, `${playerChar.walkDelay}`)
+}
+
+//jump return to stand animation
+function jump() {
+  $("#p").attr("src", `${playerChar.jump}`);
+  setTimeout(stand, `${playerChar.jumpDelay}`)
+}
+ 
 
 //key press actions
 document.onkeypress = function (evt) {
@@ -212,11 +235,14 @@ document.onkeypress = function (evt) {
       }
       break;
     case 97: //a
+    if(enemyChar.alive === false) {
       walkBack();
       left(); 
+    }
       break;
     case 102: //f
       if (fkey === true){
+        clearTimeout(cancelWalk);
         playerDamage();
         fkey = false;
         setTimeout(function() {
@@ -237,39 +263,39 @@ document.onkeypress = function (evt) {
       setEnemy(enemies[1]);
       break;
     case 51: //3
-      setEnemy(enemies[2]);
-      break;
+    setEnemy(enemies[2]);
+    break;
     case 52: //4
-      setEnemy(enemies[3]);
-      break;
+    setEnemy(enemies[3]);
+    break;
   }
 }
 
-//set standing animation
-function stand() {
-  $("#p").attr("src", `${playerChar.stand}`);
-}
-
-//set walking animation
-function walk() {
-  $("#p").attr("src", `${playerChar.walk}`);
-  setTimeout(stand, `${playerChar.walkDelay}`)
-}
-function walkBack() {
-  $("#p").attr("src", `${playerChar.walkB}`);
-  setTimeout(stand, `${playerChar.walkDelay}`)
-}
-
-//jump return to stand animation
-function jump() {
-  $("#p").attr("src", `${playerChar.jump}`);
-  setTimeout(stand, `${playerChar.jumpDelay}`)
-}
- 
 function death() {
   $("#p").attr("src", `${playerChar.death}`);
 }
 
+//calc player damage subtract from enemy life bar
+function playerDamage() {
+  if (enemyChar.alive === true) {
+    var p = enemyChar.hp/20;
+    var x = playerChar.dam;
+    var d = 20;
+    for (let i = 20; i > 0; i--) {
+      if ($(`#ehp${i}`).css("color") !== "rgb(255, 0, 0)"){
+        d--;
+      }
+    }
+    setTimeout(function () {
+      damageTimingPlayer(x, p, d);
+    }, `${playerChar.impact}`)
+    
+    $("#p").attr("src", `${playerChar.fight}`);
+    setTimeout(stand, `${playerChar.fightDelay}`);
+  }
+}
+
+//show damage at time of animation hit
 function damageTimingPlayer(x, p, d) {
   for (x; x > 0; x -= p) {
     if (x >= p) {
@@ -284,13 +310,36 @@ function damageTimingPlayer(x, p, d) {
     enemyChar.alive = false;
     clearInterval(fight);
     setTimeout(function() {
-    $("#enemyLifeBar").css("visibility", "hidden");
-    $("#enemyName").css("visibility", "hidden");
-  }, 1000)
+      $("#enemyLifeBar").css("visibility", "hidden");
+      $("#enemyName").css("visibility", "hidden");
+    }, 1000)
   }
 }
 
+//calc enemy damage, subtract from player life bar
+function enemyDamage() {
+  var p = playerChar.hp/20;
+  var x = enemyChar.dam;
+  var d = 20;
+  for (let i = 20; i > 0; i--) {
+    if ($(`#hp${i}`).css("color") !== "rgb(255, 0, 0)"){
+      d--;
+    }
+  }
+
+  var impact = enemyChar.fightDelay *0.9;
+
+  setTimeout(function () {
+    damageTimingEnemy(x, p, d);
+  }, `${enemyChar.impact}`)
+
+  $("#e").attr("src", `${enemyChar.fight}`);
+  setTimeout(fightReset, enemyChar.fightDelay)
+}
+
+//show damage at time of animation hit
 function damageTimingEnemy(x, p, d) {
+  if( enemyChar.alive === true) {
   for (x; x > 0; x -= p) {
     if (x >= p) {
       $(`#hp${d}`).css("color", "white")
@@ -299,33 +348,19 @@ function damageTimingEnemy(x, p, d) {
   }
   if ($(`#hp1`).css("color") === "rgb(255, 255, 255)") {
     death();
+    var audio = new Audio('assets/audio/die.mp3');
+    audio.play();
   }
 }
-//calc player damage subtract from enemy life bar
-function playerDamage() {
-  if (enemyChar.alive === true) {
-  var p = enemyChar.hp/20;
-  var x = playerChar.dam;
-  var d = 20;
-  for (let i = 20; i > 0; i--) {
-    if ($(`#ehp${i}`).css("color") !== "rgb(255, 0, 0)"){
-      d--;
-    }
-  }
-  setTimeout(function () {
-    damageTimingPlayer(x, p, d);
-  }, `${playerChar.impact}`)
-
-  $("#p").attr("src", `${playerChar.fight}`);
-  setTimeout(stand, `${playerChar.fightDelay}`);
-  }
 }
 
+//enemy auto attack 
 function combat() {
   if(enemyChar.alive === true) {
     enemyDamage();
   }
 }
+
 //get exp on kill update xpbar
 function getXp() {
   var d = 1;
@@ -340,12 +375,9 @@ function getXp() {
       $(`#xp${d}`).css("color", "red")
       d++;
     }
-  
-  if ($(`#xp20`).css("color") !== "rgb(255, 255, 255)") {
-    lvlUp();
-  }
-
-
+    if ($(`#xp20`).css("color") !== "rgb(255, 255, 255)") {
+      lvlUp();
+    }
   }
 
 //flourish for lvling up
@@ -370,31 +402,12 @@ function lvlUp() {
     setTimeout(white, 1500);
     }
 
-//calc enemy damage, subtract from player life bar
-function enemyDamage() {
-  var p = playerChar.hp/20;
-  var x = enemyChar.dam;
-  var d = 20;
-  for (let i = 20; i > 0; i--) {
-    if ($(`#hp${i}`).css("color") !== "rgb(255, 0, 0)"){
-      d--;
-    }
-  }
-
-  var impact = enemyChar.fightDelay *0.9;
-
-  setTimeout(function () {
-    damageTimingEnemy(x, p, d);
-  }, `${enemyChar.impact}`)
-
-  $("#e").attr("src", `${enemyChar.fight}`);
-  setTimeout(fightReset, enemyChar.fightDelay)
-  
-}
 
 //set enemy animation to stand after attack animation is finished
 function fightReset() {
+  if (enemyChar.alive === true) {
   $("#e").attr("src", `${enemyChar.stand}`);
+  }
 }
 
 
