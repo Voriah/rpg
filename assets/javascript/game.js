@@ -12,15 +12,15 @@ var cancelAttack;
 var fight;
 var dkey = true;
 var fkey = true;
-var spawn = parseInt($("body").css("background-position-x"))
+var spawn = 0;
 
 
 //curent player char
 var playerChar = {
   name: "",
-  dam: 0,
-  hp: 0,
-  exp: 0,
+  dam: 1,
+  hp: 1,
+  exp: 1,
   stand: "",
   walk: "",
   walkB: "",
@@ -30,7 +30,8 @@ var playerChar = {
   impact: 0,
   jump: "",
   jumpDelay: "",
-  death: ""
+  death: "",
+  alive: false,
 }
 
 //current enemy char
@@ -191,7 +192,13 @@ var items = [
     name: "knife",
     icon: "assets/images/knife.png",
     drop: "assets/images/knifedrop.gif",
-    onUse: function() {},
+    onUse: function() {
+      $("#p").attr("src", "assets/images/knifeuse.gif")
+      itemDamage();
+      setTimeout(function () {
+        stand();
+      }, 2000);
+    },
   },
   {
     name: "meat",
@@ -215,6 +222,7 @@ function useItemOne() {
   else if (use !== 5 && enemyChar.alive === true) {
     items[use].onUse();
     clearTimeout(cancelAttack);
+    clearTimeout(cancelWalk);
     $("#firstItem").attr("src", "");
   }
 }
@@ -229,12 +237,13 @@ function useItemTwo() {
   else if (use !== 5 && enemyChar.alive === true) {
     items[use].onUse();
     clearTimeout(cancelAttack);
+    clearTimeout(cancelWalk);
     $("#secondItem").attr("src", "");
   }
 }
 
 function itemDrop() { 
-  var rand = Math.floor(Math.random() * 0)
+  var rand = Math.floor(Math.random() * 5)
   var getItem = Math.floor(Math.random() * 6)
   if (rand === 0 ) {
     setTimeout(function() {
@@ -264,7 +273,7 @@ function itemDamage() {
   }
   setTimeout(function () {
     damageTimingPlayer(x, p, d);
-  }, `${playerChar.impact}`)
+  }, 1400)
 }
 
 //set player attributes for selected character
@@ -284,6 +293,7 @@ function setPlayer(char) {
   playerChar.jump = char.jump;
   playerChar.jumpDelay = char.jumpDelay;
   playerChar.death = char.death;
+  playerChar.alive = true;
   $("#p").attr("src", `${char.stand}`); 
 }
 
@@ -430,6 +440,12 @@ document.onkeypress = function (evt) {
 
 function death() {
   $("#p").attr("src", `${playerChar.death}`);
+  var audio = new Audio('assets/audio/die.mp3');
+  audio.play();
+  playerChar.alive = false;
+  setTimeout(function() {
+    $("#p").attr("src", "assets/images/gravestone.png");
+  }, 2000)
 }
 
 //calc player damage subtract from enemy life bar
@@ -510,9 +526,9 @@ function damageTimingEnemy(x, p, d) {
     }
   }
   if ($(`#hp1`).css("color") === "rgb(255, 255, 255)") {
+    if (playerChar.alive === true){
     death();
-    var audio = new Audio('assets/audio/die.mp3');
-    audio.play();
+    }
   }
 }
 }
