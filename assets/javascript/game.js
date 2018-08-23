@@ -2,11 +2,12 @@ $(document).ready(function () {
   setPlayer(players[0]);
 });
 setTimeout(function() {
-  audio.play()
+  soundtrack.play()
 }, 1000)
+var bossfight = new Audio("assets/audio/draculabattle.mp3")
+var soundtrack = new Audio('assets/audio/cast.ogg');
+soundtrack.loop = true;
 
-var audio = new Audio('assets/audio/cast.ogg');
-audio.loop = true;
 var cancelWalk;
 var cancelAttack;
 var fight;
@@ -54,7 +55,7 @@ var players = [
   {
     name: "Simon",
     dam: 10,
-    hp: 100,
+    hp: 150,
     exp: 0,
     stand: "assets/images/simonstand.png",
     walk: "assets/images/simonwalk.gif",
@@ -84,16 +85,28 @@ var enemies = [
     death: "assets/images/medusadeath.gif",
   },
   {
-    name: "mummy",
-    dam: 20,
-    hp: 150,
-    exp: 20,
-    stand: "assets/images/mummystand.gif",
-    fight: "assets/images/mummyattack.gif",
-    fightDelay: 2400,
-    attackSpeed: 4000,
-    impact: 1600,
-    death: "assets/images/mummydeath.gif",
+    name: "medusa",
+    dam: 10,
+    hp: 75,
+    exp: 10,
+    stand: "assets/images/medusastand.gif",
+    fight: "assets/images/medusattack.gif",
+    fightDelay: 1350,
+    attackSpeed: 3300,
+    impact: 825,
+    death: "assets/images/medusadeath.gif",
+  },
+  {
+    name: "medusa",
+    dam: 10,
+    hp: 75,
+    exp: 10,
+    stand: "assets/images/medusastand.gif",
+    fight: "assets/images/medusattack.gif",
+    fightDelay: 1350,
+    attackSpeed: 3300,
+    impact: 825,
+    death: "assets/images/medusadeath.gif",
   },
   { 
     name: "skeleton",
@@ -106,6 +119,90 @@ var enemies = [
     attackSpeed: 3200,
     impact: 1800,
     death: "assets/images/skeletondeath.gif",
+  },
+  { 
+    name: "skeleton",
+    dam: 15,
+    hp: 100,
+    exp: 20,
+    stand: "assets/images/skeletonstand.gif",
+    fight: "assets/images/skeletonattack.gif",
+    fightDelay: 1800,
+    attackSpeed: 3200,
+    impact: 1800,
+    death: "assets/images/skeletondeath.gif",
+  },
+  { 
+    name: "skeleton",
+    dam: 15,
+    hp: 100,
+    exp: 20,
+    stand: "assets/images/skeletonstand.gif",
+    fight: "assets/images/skeletonattack.gif",
+    fightDelay: 1800,
+    attackSpeed: 3200,
+    impact: 1800,
+    death: "assets/images/skeletondeath.gif",
+  },
+  { 
+    name: "skeleton",
+    dam: 15,
+    hp: 100,
+    exp: 20,
+    stand: "assets/images/skeletonstand.gif",
+    fight: "assets/images/skeletonattack.gif",
+    fightDelay: 1800,
+    attackSpeed: 3200,
+    impact: 1800,
+    death: "assets/images/skeletondeath.gif",
+  },
+  {
+    name: "mummy",
+    dam: 20,
+    hp: 150,
+    exp: 20,
+    stand: "assets/images/mummystand.gif",
+    fight: "assets/images/mummyattack.gif",
+    fightDelay: 2400,
+    attackSpeed: 4000,
+    impact: 1600,
+    death: "assets/images/mummydeath.gif",
+  },
+  {
+    name: "mummy",
+    dam: 20,
+    hp: 150,
+    exp: 20,
+    stand: "assets/images/mummystand.gif",
+    fight: "assets/images/mummyattack.gif",
+    fightDelay: 2400,
+    attackSpeed: 4000,
+    impact: 1600,
+    death: "assets/images/mummydeath.gif",
+  },
+  {
+    name: "gaibon",
+    dam: 20,
+    hp: 140,
+    exp: 30,
+    stand: "assets/images/gaibonstand.gif",
+    fight: "assets/images/gaibonattack.gif",
+    fightDelay: 1750,
+    attackSpeed: 4000,
+    impact: 1750,
+    death: "assets/images/gaibondeath.gif",
+  },
+  {
+    name: "gaibon",
+    dam: 20,
+    hp: 140,
+    exp: 30,
+    stand: "assets/images/gaibonstand.gif",
+    fight: "assets/images/gaibonattack.gif",
+    fightDelay: 1750,
+    attackSpeed: 4000,
+    impact: 1750,
+    death: "assets/images/gaibondeath.gif",
   },
   {
     name: "death",
@@ -122,7 +219,7 @@ var enemies = [
   {
     name: "frankenstein",
     dam: 20,
-    hp: 160,
+    hp: 200,
     exp: 30,
     stand: "assets/images/frankensteinstand.gif",
     fight: "assets/images/frankensteinattack.gif",
@@ -132,26 +229,20 @@ var enemies = [
     death: "assets/images/frankensteindeath.gif",
   },
   {
-    name: "gaibon",
-    dam: 20,
-    hp: 140,
+    name: "dracula",
+    dam: 40,
+    hp: 500,
     exp: 30,
-    stand: "assets/images/gaibonstand.gif",
-    fight: "assets/images/gaibonattack.gif",
-    fightDelay: 1750,
+    stand: "assets/images/draculastand.png",
+    fight: "assets/images/draculaattack.gif",
+    fightDelay: 1650,
     attackSpeed: 4000,
-    impact: 1750,
-    death: "assets/images/gaibondeath.gif",
+    impact: 1350,
+    death: "assets/images/draculadeath.gif",
   },
 ];
 
 var items = [
-  {
-    name: "axe",
-    icon: "assets/images/axe.png",
-    drop: "assets/images/axedrop.gif",
-    onUse: function() {},
-  },
   {
     name: "bow",
     icon: "assets/images/bow.png",
@@ -161,7 +252,7 @@ var items = [
       itemDamage();
       setTimeout(function () {
         stand();
-      }, 2000);
+      }, 1700);
     },
   },
   {
@@ -183,9 +274,9 @@ var items = [
     icon: "assets/images/holywater.png",
     drop: "assets/images/holywaterdrop.gif",
     onUse: function() {
-      var mk = new Audio("assets/audio/fatality.mp3");
+      var mk = new Audio("assets/audio/toasty.mp3");
       mk.play();
-      $("#p").attr("src", "assets/images/holywateruse.gif")
+      $("#p").attr("src", "assets/images/scorpion.gif")
       itemDamage();
       setTimeout(function () {
         stand();
@@ -251,8 +342,8 @@ function useItemTwo() {
 }
 
 function itemDrop() { 
-  var rand = Math.floor(Math.random() * 5)
-  var getItem = Math.floor(Math.random() * 6)
+  var rand = Math.floor(Math.random() * 4)
+  var getItem = Math.floor(Math.random() * 5)
   if (rand === 0 ) {
     setTimeout(function() {
       $("#e").attr("src", items[getItem].drop);
@@ -337,8 +428,22 @@ function setEnemy(char) {
 function posit () {
   switch (spawn) {
     case -5: 
+  
+      var finalBattle = Math.floor(Math.random() * 25)
+      if (finalBattle === 0) {
+          soundtrack.pause();
+          var bossfight = new Audio("assets/audio/draculabattle.mp3")
+          bossfight.loop = true;
+          bossfight.play();
+          setTimeout(function () {
+            setEnemy(enemies[13]);
+            spawn += Math.floor(Math.random() * 5 + 5);
+          }, playerChar.walkDelay)
+        break;
+      }
+
       setTimeout(function() {
-        setEnemy(enemies[Math.floor(Math.random()*6)]);
+        setEnemy(enemies[Math.floor(Math.random()*12)]);
         spawn += Math.floor(Math.random() * 5 + 5);
       }, playerChar.walkDelay)
     break;  
@@ -450,6 +555,7 @@ document.onkeypress = function (evt) {
     setEnemy(enemies[5]);
     break;
     case 55: //7
+      setEnemy(enemies[6]);
     break;
   }
 }
@@ -534,8 +640,13 @@ function enemyDamage() {
 
 //show damage at time of animation hit
 function damageTimingEnemy(x, p, d) {
-  var hit = new Audio("assets/audio/hitsound.wav");
+  if (enemyChar.name === "dracula") {
+    var drachit = new Audio("assets/audio/draculahit.wav");
+    drachit.play();
+  } else {
+  var hit = new Audio("assets/audio/gethit.wav");
   hit.play();
+  }
   if( enemyChar.alive === true) {
   for (x; x > 0; x -= p) {
     if (x >= p) {
