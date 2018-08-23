@@ -230,9 +230,9 @@ var enemies = [
   },
   {
     name: "dracula",
-    dam: 40,
+    dam: 50,
     hp: 500,
-    exp: 30,
+    exp: 100,
     stand: "assets/images/draculastand.png",
     fight: "assets/images/draculaattack.gif",
     fightDelay: 1650,
@@ -711,6 +711,9 @@ function lvlUp() {
     playerChar.fight = "assets/images/simonattack2.gif";
     gold();
     setTimeout(white, 1500);
+  for (i = 1; i <= 20; i++) {
+    $(`#hp${i}`).css("color", "red");
+  }
     }
 
 
