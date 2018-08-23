@@ -330,7 +330,7 @@ function useItemTwo() {
   var use = parseInt($("#secondItem").attr("data-itemNum"));
   
   if (use === 4 && enemyChar.alive === false) {
-    items[5].onUse();
+    items[4].onUse();
     $("#secondItem").attr("src", "");
   }
   else if (use !== 4 && enemyChar.alive === true) {
