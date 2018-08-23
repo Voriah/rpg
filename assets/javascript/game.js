@@ -1,9 +1,9 @@
 $(document).ready(function () {
   setPlayer(players[0]);
 });
-// setTimeout(function() {
-//   audio.play()
-// }, 1000)
+setTimeout(function() {
+  audio.play()
+}, 1000)
 
 var audio = new Audio('assets/audio/cast.ogg');
 audio.loop = true;
@@ -53,7 +53,7 @@ var enemyChar = {
 var players = [
   {
     name: "Simon",
-    dam: 20,
+    dam: 10,
     hp: 100,
     exp: 0,
     stand: "assets/images/simonstand.png",
@@ -121,7 +121,7 @@ var enemies = [
   },
   {
     name: "frankenstein",
-    dam: 25,
+    dam: 20,
     hp: 160,
     exp: 30,
     stand: "assets/images/frankensteinstand.gif",
@@ -133,7 +133,7 @@ var enemies = [
   },
   {
     name: "gaibon",
-    dam: 25,
+    dam: 20,
     hp: 140,
     exp: 30,
     stand: "assets/images/gaibonstand.gif",
@@ -169,6 +169,8 @@ var items = [
     icon: "assets/images/cross.png",
     drop: "assets/images/crossdrop.gif",
     onUse: function() {
+      var cpt = new Audio("assets/audio/falconpunch.mp3");
+      cpt.play();
       $("#p").attr("src", "assets/images/crossuse.gif")
       itemDamage();
       setTimeout(function () {
@@ -181,6 +183,8 @@ var items = [
     icon: "assets/images/holywater.png",
     drop: "assets/images/holywaterdrop.gif",
     onUse: function() {
+      var mk = new Audio("assets/audio/fatality.mp3");
+      mk.play();
       $("#p").attr("src", "assets/images/holywateruse.gif")
       itemDamage();
       setTimeout(function () {
@@ -193,6 +197,8 @@ var items = [
     icon: "assets/images/knife.png",
     drop: "assets/images/knifedrop.gif",
     onUse: function() {
+      var tuttle = new Audio("assets/audio/cowabunga.mp3");
+      tuttle.play();
       $("#p").attr("src", "assets/images/knifeuse.gif")
       itemDamage();
       setTimeout(function () {
@@ -205,6 +211,8 @@ var items = [
     icon: "assets/images/meat.png",
     drop: "assets/images/meatdrop.gif",
     onUse: function() {
+        var heal = new Audio("assets/audio/heal.wav");
+        heal.play();
         for (i = 1; i <= 20; i++) {
           $(`#hp${i}`).css("color", "red");
       }
@@ -249,6 +257,10 @@ function itemDrop() {
     setTimeout(function() {
       $("#e").attr("src", items[getItem].drop);
     }, 2200)
+    setTimeout(function () {
+      var dropped = new Audio("assets/audio/itemdrop.wav");
+      dropped.play();
+    }, 3000)
     setTimeout(function() {
       if ($("#firstItem").attr("src") === "") {
       $("#firstItem").attr("src", items[getItem].icon);
@@ -324,10 +336,13 @@ function setEnemy(char) {
 //spawn enemy based on position
 function posit () {
   switch (spawn) {
-    case -400:
-    setEnemy(enemies[Math.floor(Math.random()*6)]);
-    spawn += 400;
+    case -5: 
+      setTimeout(function() {
+        setEnemy(enemies[Math.floor(Math.random()*6)]);
+        spawn += Math.floor(Math.random() * 5 + 5);
+      }, playerChar.walkDelay)
     break;  
+
   }
 }
 
@@ -343,7 +358,7 @@ function right () {
   $('body').animate({
     'background-position-x': '-=100px',
   }, `${playerChar.walkDelay}`);
-  spawn -=100;
+  spawn--;
 }
 
 //set standing animation
@@ -379,10 +394,12 @@ document.onkeypress = function (evt) {
  
   switch (input) {
     case 32: //space
+    if (playerChar.alive === true){
       jump();  
+    }
       break;
     case 100: //d
-      if (dkey === true && enemyChar.alive === false) {
+      if (dkey === true && enemyChar.alive === false && playerChar.alive === true) {
         walk();      
         right();
         posit();    
@@ -393,13 +410,13 @@ document.onkeypress = function (evt) {
       }
       break;
     case 97: //a
-    if(enemyChar.alive === false) {
+    if(enemyChar.alive === false && playerChar.alive === true) {
       walkBack();
       left(); 
     }
       break;
     case 102: //f
-      if (fkey === true){
+      if (fkey === true && playerChar.alive === true){
         clearTimeout(cancelWalk);
         playerDamage();
         fkey = false;
@@ -409,10 +426,10 @@ document.onkeypress = function (evt) {
       }
       break;
     case 113: //q
-      setPlayer(players[0]);
+      useItemOne();
       break;
-    case 114: //r
-      enemyDamage();
+    case 101: //e
+      useItemTwo();
       break;
     case 49: //1
       setEnemy(enemies[0]);
@@ -433,7 +450,6 @@ document.onkeypress = function (evt) {
     setEnemy(enemies[5]);
     break;
     case 55: //7
-      $("#e").attr("src", "assets/images/knifedrop.gif")
     break;
   }
 }
@@ -452,7 +468,7 @@ function death() {
 function playerDamage() {
   if (enemyChar.alive === true) {
     var p = enemyChar.hp/20;
-    var x = Math.floor(Math.random() * 30 + playerChar.dam);
+    var x = Math.floor(Math.random() * 20 + playerChar.dam);
     var d = 20;
     for (let i = 20; i > 0; i--) {
       if ($(`#ehp${i}`).css("color") !== "rgb(255, 0, 0)"){
@@ -518,6 +534,8 @@ function enemyDamage() {
 
 //show damage at time of animation hit
 function damageTimingEnemy(x, p, d) {
+  var hit = new Audio("assets/audio/hitsound.wav");
+  hit.play();
   if( enemyChar.alive === true) {
   for (x; x > 0; x -= p) {
     if (x >= p) {
@@ -575,6 +593,8 @@ function white() {
 
 //add damage and hp when lvling up, xpbar animation
 function lvlUp() {
+    var lvl = new Audio("assets/audio/lvlup.wav");
+    lvl.play();
     playerChar.dam *= 1.25;
     playerChar.hp *= 1.25;
     playerChar.fight = "assets/images/simonattack2.gif";
