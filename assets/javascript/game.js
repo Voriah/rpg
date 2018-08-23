@@ -314,11 +314,11 @@ var items = [
 function useItemOne() { 
   var use = parseInt($("#firstItem").attr("data-itemNum"));
 
-  if (use === 5 && enemyChar.alive === false) {
-    items[5].onUse();
+  if (use === 4 && enemyChar.alive === false) {
+    items[4].onUse();
     $("#firstItem").attr("src", "");
   }
-  else if (use !== 5 && enemyChar.alive === true) {
+  else if (use !== 4 && enemyChar.alive === true) {
     items[use].onUse();
     clearTimeout(cancelAttack);
     clearTimeout(cancelWalk);
@@ -329,11 +329,11 @@ function useItemOne() {
 function useItemTwo() { 
   var use = parseInt($("#secondItem").attr("data-itemNum"));
   
-  if (use === 5 && enemyChar.alive === false) {
+  if (use === 4 && enemyChar.alive === false) {
     items[5].onUse();
     $("#secondItem").attr("src", "");
   }
-  else if (use !== 5 && enemyChar.alive === true) {
+  else if (use !== 4 && enemyChar.alive === true) {
     items[use].onUse();
     clearTimeout(cancelAttack);
     clearTimeout(cancelWalk);
@@ -707,7 +707,7 @@ function lvlUp() {
     var lvl = new Audio("assets/audio/lvlup.wav");
     lvl.play();
     playerChar.dam *= 1.25;
-    playerChar.hp *= 1.25;
+    playerChar.hp *= 1.1;
     playerChar.fight = "assets/images/simonattack2.gif";
     gold();
     setTimeout(white, 1500);
