@@ -8,6 +8,7 @@ $(document).ready(function () {
 var audio = new Audio('assets/audio/cast.ogg');
 audio.loop = true;
 var cancelWalk;
+var cancelAttack;
 var fight;
 var dkey = true;
 var fkey = true;
@@ -172,7 +173,13 @@ var items = [
     name: "holywater",
     icon: "assets/images/holywater.png",
     drop: "assets/images/holywaterdrop.gif",
-    onUse: function() {},
+    onUse: function() {
+      $("#p").attr("src", "assets/images/holywateruse.gif")
+      itemDamage();
+      setTimeout(function () {
+        stand();
+      }, 2000);
+    },
   },
   {
     name: "knife",
@@ -193,17 +200,31 @@ var items = [
 ];
 
 function useItemOne() { 
-  console.log($("#firstItem").attr("data-itemNum"))
-  var use = $("#firstItem").attr("data-itemNum");
-  items[use].onUse();
-  $("#firstItem").attr("src", "");
+  var use = parseInt($("#firstItem").attr("data-itemNum"));
+
+  if (use === 5 && enemyChar.alive === false) {
+    items[5].onUse();
+    $("#firstItem").attr("src", "");
+  }
+  else if (use !== 5 && enemyChar.alive === true) {
+    items[use].onUse();
+    clearTimeout(cancelAttack);
+    $("#firstItem").attr("src", "");
+  }
 }
 
 function useItemTwo() { 
-  console.log($("#secondItem").attr("data-itemNum"))
-  var use = $("#secondItem").attr("data-itemNum");
-  items[use].onUse();
-  $("#secondItem").attr("src", "");
+  var use = parseInt($("#secondItem").attr("data-itemNum"));
+  
+  if (use === 5 && enemyChar.alive === false) {
+    items[5].onUse();
+    $("#secondItem").attr("src", "");
+  }
+  else if (use !== 5 && enemyChar.alive === true) {
+    items[use].onUse();
+    clearTimeout(cancelAttack);
+    $("#secondItem").attr("src", "");
+  }
 }
 
 function itemDrop() { 
@@ -421,7 +442,7 @@ function playerDamage() {
     }, `${playerChar.impact}`)
     
     $("#p").attr("src", `${playerChar.fight}`);
-    setTimeout(stand, `${playerChar.fightDelay}`);
+     cancelAttack = setTimeout(stand, `${playerChar.fightDelay}`);
   }
 }
 
