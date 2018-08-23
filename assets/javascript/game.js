@@ -167,7 +167,13 @@ var items = [
     name: "cross",
     icon: "assets/images/cross.png",
     drop: "assets/images/crossdrop.gif",
-    onUse: function() {},
+    onUse: function() {
+      $("#p").attr("src", "assets/images/crossuse.gif")
+      itemDamage();
+      setTimeout(function () {
+        stand();
+      }, 2000);
+    },
   },
   {
     name: "holywater",
@@ -448,6 +454,8 @@ function playerDamage() {
 
 //show damage at time of animation hit
 function damageTimingPlayer(x, p, d) {
+  var hit = new Audio("assets/audio/hitsound.wav");
+  hit.play();
   for (x; x > 0; x -= p) {
     if (x >= p) {
       $(`#ehp${d}`).css("color", "white")
@@ -553,6 +561,7 @@ function white() {
 function lvlUp() {
     playerChar.dam *= 1.25;
     playerChar.hp *= 1.25;
+    playerChar.fight = "assets/images/simonattack2.gif";
     gold();
     setTimeout(white, 1500);
     }
