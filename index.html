@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>RPG</title>
+</head>
+<body>
+<div id="screen" class="row">
+  <div class="row">
+    <div class="floor">
+    <img id="p" src="" alt="">
+    <img id="e" src="" alt="">  
+    </div>
+  </div>
+  
+  <div class="row" id="hud">
+    <div class="col l3 m2 s3"></div>
+    
+    
+    <div class="col l3 m4 s5" id="playerStats"> 
+      <p id="playerName">Simon</p>
+      <p>HP:<span class="hp" id="php" ><span id="hp1">|</span><span id="hp2">|</span> <span id="hp3">|</span><span id="hp4">|</span> <span id="hp5">|</span><span id="hp6">|</span> <span id="hp7">|</span><span id="hp8">|</span> <span id="hp9">|</span><span id="hp10">|</span> <span id="hp11">|</span><span id="hp12">|</span> <span id="hp13">|</span><span id="hp14">|</span> <span id="hp15">|</span><span id="hp16">|</span> <span id="hp17">|</span><span id="hp18">|</span> <span id="hp19">|</span><span id ="hp20">|</span></span></p>
+      
+      <p>XP:<span class="xp" id="pxp" ><span id="xp1">|</span><span id="xp2">|</span> <span id="xp3">|</span><span id="xp4">|</span> <span id="xp5">|</span><span id="xp6">|</span> <span id="xp7">|</span><span id="xp8">|</span> <span id="xp9">|</span><span id="xp10">|</span> <span id="xp11">|</span><span id="xp12">|</span> <span id="xp13">|</span><span id="xp14">|</span> <span id="xp15">|</span><span id="xp16">|</span> <span id="xp17">|</span><span id="xp18">|</span> <span id="xp19">|</span><span id ="xp20">|</span></span></p>
+      
+      <div class="row">
+        <div class="col l3 m2 s1"></div>
+        <div class="col l3 m4 s6 item-box">
+          <img class="items" id="firstItem" data-itemNum="" onclick="useItemOne()" src="" alt="">
+        </div>
+        <div class="col l3 m4 s6 item-box">
+          <img class="items" id="secondItem" data-itemNum="" onclick="useItemTwo()" src="" alt="">
+        </div>
+        <div class="col l3 m3 s3"></div>
+
+    </div>
+    
+    </div>
+    
+    
+    <div class="col l3 m4 s5" id="enemyStats">
+      <p id="enemyName"></p>
+      <p id ="enemyLifeBar" >HP:<span class="hp" id="php" ><span id="ehp1">|</span><span id="ehp2">|</span> <span id="ehp3">|</span><span id="ehp4">|</span> <span id="ehp5">|</span><span id="ehp6">|</span> <span id="ehp7">|</span><span id="ehp8">|</span> <span id="ehp9">|</span><span id="ehp10">|</span> <span id="ehp11">|</span><span id="ehp12">|</span> <span id="ehp13">|</span><span id="ehp14">|</span> <span id="ehp15">|</span><span id="ehp16">|</span> <span id="ehp17">|</span><span id="ehp18">|</span> <span id="ehp19">|</span><span id ="ehp20">|</span></span></p>
+    </div>
+    
+    
+    
+    
+    <div class="col l3 m2 s1"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  <script src="assets/javascript/game.js"></script>
+</body>
+
+</html>

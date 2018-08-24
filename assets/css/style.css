@@ -1,0 +1,79 @@
+@font-face { 
+    font-family: nes;
+    src: url("../fonts/emulogic.ttf");
+}
+
+.floor {
+  height: 450px;
+  width: 900px;
+  margin: auto;
+  display: flex;
+  margin-top: 300px;
+}
+
+body {
+  background: url("../images/cast.png") repeat-x;
+  background-color: black;
+  font-family: nes;
+}
+
+#p, #e {
+  width: 50%
+}
+
+div {
+  color: white;
+  font-size: 20px;
+  /* border: 1px solid white; */
+}
+#enemyLifeBar {
+  visibility: hidden;
+}
+
+#hud {
+  position: relative;
+  bottom: 100px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+
+}
+.col {
+  text-align: center;
+
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.hp{
+  letter-spacing: -15px;
+  color: red;
+  margin: 0;
+}
+
+.xp{
+  letter-spacing: -15px;
+  color: white;
+  margin: 0;
+}
+
+.items {
+  width: 100%;
+}
+
+.item-box {
+  border: 5px ridge white;
+  width: 100px;
+  height: 100px;
+  margin-top: 20px;
+}
+
+#screen {
+  height: 0px;
+  width: 100%;
+}
