@@ -266,7 +266,7 @@ var items = [
       itemDamage();
       setTimeout(function () {
         stand();
-      }, 2000);
+      }, 2100);
     },
   },
   {
