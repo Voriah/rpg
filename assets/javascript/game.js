@@ -15,6 +15,18 @@ var dkey = true;
 var fkey = true;
 var spawn = 0;
 
+function buttins() {
+  $("#info").append(`<p>d moves right</p>`)
+  $("#info").append(`<p>f to attack</p>`)
+  $("#info").append(`<p>q is first item</p>`)
+  $("#info").append(`<p>e is second item</p>`)
+  $("#info").append(`<p>space jumps</p>`)   
+}
+buttins();
+
+setTimeout(function () {
+  $("#info").empty();
+}, 7000)
 
 //curent player char
 var playerChar = {
@@ -317,12 +329,15 @@ function useItemOne() {
   if (use === 4 && enemyChar.alive === false) {
     items[4].onUse();
     $("#firstItem").attr("src", "");
+    $("#firstItem").attr("data-itemNum", "");
+
   }
   else if (use !== 4 && enemyChar.alive === true) {
     items[use].onUse();
     clearTimeout(cancelAttack);
     clearTimeout(cancelWalk);
     $("#firstItem").attr("src", "");
+    $("#firstItem").attr("data-itemNum", "");
   }
 }
 
@@ -332,12 +347,14 @@ function useItemTwo() {
   if (use === 4 && enemyChar.alive === false) {
     items[4].onUse();
     $("#secondItem").attr("src", "");
+    $("#secondItem").attr("data-itemNum", "");
   }
   else if (use !== 4 && enemyChar.alive === true) {
     items[use].onUse();
     clearTimeout(cancelAttack);
     clearTimeout(cancelWalk);
     $("#secondItem").attr("src", "");
+    $("#secondItem").attr("data-itemNum", "");
   }
 }
 
