@@ -443,7 +443,7 @@ function posit () {
       }
 
       setTimeout(function() {
-        setEnemy(enemies[Math.floor(Math.random()*12)]);
+        setEnemy(enemies[Math.floor(Math.random()*13)]);
         spawn += Math.floor(Math.random() * 5 + 5);
       }, playerChar.walkDelay)
     break;  
