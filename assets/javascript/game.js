@@ -554,25 +554,25 @@ document.onkeypress = function (evt) {
       useItemTwo();
       break;
     case 49: //1
-      setEnemy(enemies[0]);
+     // setEnemy(enemies[0]);
       break;
     case 50: //2
-      setEnemy(enemies[1]);
+     // setEnemy(enemies[1]);
       break;
     case 51: //3
-    setEnemy(enemies[2]);
+   // setEnemy(enemies[2]);
     break;
     case 52: //4
-    setEnemy(enemies[3]);
+   // setEnemy(enemies[3]);
     break;4
     case 53: //5
-    setEnemy(enemies[4]);
+   // setEnemy(enemies[4]);
     break;
     case 54: //6
-    setEnemy(enemies[5]);
+   // setEnemy(enemies[5]);
     break;
     case 55: //7
-      setEnemy(enemies[6]);
+    //  setEnemy(enemies[6]);
     break;
   }
 }
@@ -618,6 +618,11 @@ function damageTimingPlayer(x, p, d) {
     }
   }
   if ($(`#ehp1`).css("color") === "rgb(255, 255, 255)") {
+    if (enemyChar.name === "dracula") {
+      bossfight.pause();
+      soundtrack.loop = true;
+      soundtrack.play();
+    }
     $("#e").attr("src", `${enemyChar.death}`);
     playerChar.exp = 0 + enemyChar.exp;
     getXp();
