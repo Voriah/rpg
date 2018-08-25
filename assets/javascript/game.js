@@ -20,13 +20,15 @@ function buttins() {
   $("#info").append(`<p>f to attack</p>`)
   $("#info").append(`<p>q is first item</p>`)
   $("#info").append(`<p>e is second item</p>`)
+  $("#info").append(`<p>can only use weapon items in combat</p>`)
+  $("#info").append(`<p>can only use heal item out of combat</p>`)
   $("#info").append(`<p>space jumps</p>`)   
 }
 buttins();
 
 setTimeout(function () {
   $("#info").empty();
-}, 7000)
+}, 15000)
 
 //curent player char
 var playerChar = {
